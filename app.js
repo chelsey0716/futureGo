@@ -25,12 +25,13 @@ class FutureGoApp {
         this.setupOpportunityFilter();
         this.setupGooseCompanion();
         this.setupNavScrollEffect();
+        // setupMission 必须在 setupOverviewDashboard 之前执行，确保 missionData 初始化完成
+        this.setupMission();
         this.setupOverviewDashboard();
         this.setupMetricModal();
         this.setupTwinRoleCards();
         this.setupInsightCards();
         this.setupJourney();
-        this.setupMission();
         this.setupSkeletonScreen();
     }
 
@@ -514,7 +515,7 @@ class FutureGoApp {
             chatCount: 0,
             firstChatDone: false,
             lastCelebrate: null,
-            currentDream: '数据产品经理-PCG',
+            currentDream: '策略产品经理-PCG',
             streak: 0,           // 连续打卡天数
             lastActiveDate: null
         };
@@ -1287,7 +1288,7 @@ class FutureGoApp {
         this.dreamPositions = [
             {
                 id: 'pm-pcg',
-                name: '数据产品经理',
+                name: '策略产品经理',
                 dept: 'PCG 平台与内容事业群',
                 deptShort: 'PCG',
                 icon: '🏢',
@@ -1397,6 +1398,20 @@ class FutureGoApp {
             ring.setAttribute('stroke-dashoffset', targetOffset);
         }
 
+        // 同步 Twin 模块"最想去"角色卡片
+        const twinTitle = document.getElementById('twinDreamTitle');
+        const twinIcon = document.getElementById('twinDreamIcon');
+        const twinMatchBar = document.getElementById('twinDreamMatchBar');
+        const twinMatchLabel = document.getElementById('twinDreamMatchLabel');
+        const twinTags = document.getElementById('twinDreamTags');
+        const twinNote = document.getElementById('twinDreamNote');
+        if (twinTitle) twinTitle.textContent = pos.name + ' — ' + pos.deptShort;
+        if (twinIcon) twinIcon.textContent = pos.icon;
+        if (twinMatchBar) twinMatchBar.style.width = pos.match + '%';
+        if (twinMatchLabel) twinMatchLabel.textContent = pos.match + '%';
+        if (twinTags) twinTags.innerHTML = pos.tags.map(t => `<span class="role-tag dream-tag">${t}</span>`).join('');
+        if (twinNote) twinNote.textContent = pos.note;
+
         // 更新选择列表中的选中状态
         document.querySelectorAll('.dream-option-card').forEach(card => {
             card.classList.toggle('selected', card.dataset.positionId === this.currentDreamId);
@@ -1494,14 +1509,15 @@ class FutureGoApp {
             chip.addEventListener('click', () => {
                 const action = chip.dataset.action;
                 const gooseInput = document.getElementById('gooseInput');
-                const gooseToggle = document.querySelector('.goose-toggle');
+                const goosePanel = document.getElementById('goosePanel');
+                const gooseBody = document.getElementById('gooseBody');
 
-                // 打开鹅的聊天面板
-                if (gooseToggle && !gooseToggle.classList.contains('open')) {
-                    gooseToggle.click();
+                // 打开鹅的聊天面板（如果尚未打开）
+                if (goosePanel && !goosePanel.classList.contains('active')) {
+                    goosePanel.classList.add('active');
                 }
 
-                // 填入预设消息
+                // 填入预设消息并聚焦
                 if (gooseInput) {
                     const prompts = {
                         'fit': '帮我看看我适合什么岗位',
@@ -1509,9 +1525,7 @@ class FutureGoApp {
                         'task': '帮我拆一个学习任务'
                     };
                     gooseInput.value = prompts[action] || prompts.fit;
-                    // 触发发送
-                    const sendBtn = document.getElementById('gooseSendBtn');
-                    if (sendBtn) sendBtn.click();
+                    gooseInput.focus();
                 }
             });
         });
@@ -1591,9 +1605,11 @@ class FutureGoApp {
     }
 
     setupStageSelector() {
-        const buttons = document.querySelectorAll('.stage-btn');
+        const toggleBtn = document.getElementById('stageToggleBtn');
+        const stageCurrent = document.getElementById('stageCurrent');
+        const stageOptions = document.getElementById('stageOptions');
         const summaryEl = document.getElementById('heroSummaryLine');
-        if (!buttons.length) return;
+        if (!toggleBtn || !stageCurrent || !stageOptions) return;
 
         const stageContentMap = {
             'freshman': {
@@ -1618,39 +1634,93 @@ class FutureGoApp {
             }
         };
 
-        buttons.forEach(btn => {
+        let currentStage = 'senior';
+        let isExpanded = false;
+
+        // 获取所有按钮（当前 + 选项中的）
+        const getAllButtons = () => [
+            ...stageCurrent.querySelectorAll('.stage-btn'),
+            ...stageOptions.querySelectorAll('.stage-btn')
+        ];
+
+        // 同步两个容器中的 active 状态
+        const syncActiveStage = (stage) => {
+            currentStage = stage;
+            getAllButtons().forEach(b => {
+                b.classList.toggle('active', b.dataset.stage === stage);
+            });
+        };
+
+        // 应用阶段变化效果
+        const applyStageChange = (stage) => {
+            const content = stageContentMap[stage];
+            if (!content) return;
+
+            // 更新问候语
+            const nameEl = document.getElementById('greetingName');
+            const badgeTextEl = document.querySelector('.greeting-badge-text');
+            if (nameEl) nameEl.textContent = content.greeting;
+            if (badgeTextEl) badgeTextEl.textContent = content.badge;
+
+            // 更新一句话总结
+            if (summaryEl) {
+                summaryEl.innerHTML = content.summary;
+                summaryEl.style.opacity = '0';
+                summaryEl.style.transform = 'translateY(10px)';
+                requestAnimationFrame(() => {
+                    summaryEl.style.transition = 'all 0.5s ease';
+                    summaryEl.style.opacity = '1';
+                    summaryEl.style.transform = 'translateY(0)';
+                });
+            }
+
+            // 更新鹅的提示
+            if (this.gooseMemory) {
+                const stageNames = { freshman: '大一认知探索期', sophomore: '大二专业理解期', junior: '大三实习探索期', senior: '研二/大四校招冲刺期' };
+                this.gooseMemory.currentStage = stageNames[stage] || stageNames.senior;
+            }
+        };
+
+        // 切换按钮：展开/收起全部阶段选项
+        toggleBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                stageOptions.style.display = 'flex';
+                toggleBtn.classList.add('expanded');
+                toggleBtn.querySelector('.toggle-text').textContent = '收起';
+                // 展开时同步当前 active 到 options 中
+                syncActiveStage(currentStage);
+            } else {
+                stageOptions.style.display = 'none';
+                toggleBtn.classList.remove('expanded');
+                toggleBtn.querySelector('.toggle-text').textContent = '查看全部';
+            }
+        });
+
+        // 选项区按钮点击事件
+        stageOptions.querySelectorAll('.stage-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                buttons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
                 const stage = btn.dataset.stage;
-                const content = stageContentMap[stage];
-                if (!content) return;
+                syncActiveStage(stage);
+                applyStageChange(stage);
+                // 选中后自动收起
+                isExpanded = false;
+                stageOptions.style.display = 'none';
+                toggleBtn.classList.remove('expanded');
+                toggleBtn.querySelector('.toggle-text').textContent = '查看全部';
+            });
+        });
 
-                // 更新问候语
-                const nameEl = document.getElementById('greetingName');
-                const badgeTextEl = document.querySelector('.greeting-badge-text');
-                if (nameEl) nameEl.textContent = content.greeting;
-                if (badgeTextEl) badgeTextEl.textContent = content.badge;
-
-                // 更新一句话总结
-                if (summaryEl) {
-                    summaryEl.innerHTML = content.summary;
-                    // 重新触发动画
-                    summaryEl.style.opacity = '0';
-                    summaryEl.style.transform = 'translateY(10px)';
-                    requestAnimationFrame(() => {
-                        summaryEl.style.transition = 'all 0.5s ease';
-                        summaryEl.style.opacity = '1';
-                        summaryEl.style.transform = 'translateY(0)';
-                    });
-                }
-
-                // 更新鹅的提示
-                if (this.gooseMemory) {
-                    const stageNames = { freshman: '大一认知探索期', sophomore: '大二专业理解期', junior: '大三实习探索期', senior: '研二/大四校招冲刺期' };
-                    this.gooseMemory.currentStage = stageNames[stage] || stageNames.senior;
-                }
+        // 当前阶段按钮点击（也允许直接点击切换，但展开后选中不会切换）
+        stageCurrent.querySelectorAll('.stage-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (isExpanded) return; // 展开状态下不处理当前区域的点击
+                // 直接在当前区域点击时展开全部
+                isExpanded = true;
+                stageOptions.style.display = 'flex';
+                toggleBtn.classList.add('expanded');
+                toggleBtn.querySelector('.toggle-text').textContent = '收起';
+                syncActiveStage(currentStage);
             });
         });
     }
@@ -1668,6 +1738,12 @@ class FutureGoApp {
         // 动画心仪岗位匹配度环
         this.animateDreamMatchRing();
 
+        // 绘制能力雷达图
+        this.drawRadarChart();
+
+        // 绘制技能分布柱状图
+        this.drawBarsChart();
+
         // 数据卡片入场动画 (由 CSS animation-delay 控制)
         const statCards = document.querySelectorAll('.hero-stat-card');
         statCards.forEach(card => card.classList.add('visible'));
@@ -1675,6 +1751,204 @@ class FutureGoApp {
         // 时间线条目入场
         const timelineItems = document.querySelectorAll('.timeline-item[data-animate]');
         timelineItems.forEach(item => item.classList.add('visible'));
+    }
+
+    drawRadarChart() {
+        const canvas = document.getElementById('radarChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+
+        const cx = w / 2;
+        const cy = h / 2;
+        const maxR = Math.min(w, h) * 0.35;
+        const levels = 5;
+
+        // 六维数据：当前 vs 目标
+        const labels = ['SQL/数据', 'Python', 'ML工程', '产品思维', 'AB实验', '沟通表达'];
+        const current = [78, 72, 45, 80, 40, 60];
+        const target = [90, 85, 75, 85, 70, 70];
+
+        // 绘制网格
+        for (let i = 1; i <= levels; i++) {
+            const r = (maxR / levels) * i;
+            ctx.beginPath();
+            for (let j = 0; j < 6; j++) {
+                const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+                const x = cx + Math.cos(angle) * r;
+                const y = cy + Math.sin(angle) * r;
+                j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = i === levels ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.04)';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+        }
+
+        // 绘制轴线
+        for (let j = 0; j < 6; j++) {
+            const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + Math.cos(angle) * maxR, cy + Math.sin(angle) * maxR);
+            ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+        }
+
+        // 绘制目标区域（半透明填充）
+        ctx.beginPath();
+        for (let j = 0; j < 6; j++) {
+            const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+            const r = (target[j] / 100) * maxR;
+            const x = cx + Math.cos(angle) * r;
+            const y = cy + Math.sin(angle) * r;
+            j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(201,169,110,0.08)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(201,169,110,0.25)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 3]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // 绘制当前数据（实心填充 + 边框）
+        ctx.beginPath();
+        for (let j = 0; j < 6; j++) {
+            const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+            const r = (current[j] / 100) * maxR;
+            const x = cx + Math.cos(angle) * r;
+            const y = cy + Math.sin(angle) * r;
+            j === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(201,169,110,0.18)';
+        ctx.fill();
+        ctx.strokeStyle = '#c9a96e';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 绘制数据点
+        for (let j = 0; j < 6; j++) {
+            const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+            const r = (current[j] / 100) * maxR;
+            const x = cx + Math.cos(angle) * r;
+            const y = cy + Math.sin(angle) * r;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#c9a96e';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        // 标签
+        ctx.fillStyle = '#555';
+        ctx.font = '11px Inter, PingFang SC, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (let j = 0; j < 6; j++) {
+            const angle = (Math.PI * 2 / 6) * j - Math.PI / 2;
+            const labelR = maxR + 24;
+            const x = cx + Math.cos(angle) * labelR;
+            const y = cy + Math.sin(angle) * labelR;
+            ctx.fillText(labels[j], x, y);
+        }
+    }
+
+    drawBarsChart() {
+        const canvas = document.getElementById('barsChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.scale(dpr, dpr);
+
+        const padding = { top: 20, right: 30, bottom: 40, left: 30 };
+        const chartW = w - padding.left - padding.right;
+        const chartH = h - padding.top - padding.bottom;
+
+        const skills = ['SQL', 'Python', '数据分析', '产品设计', '机器学习', '项目管理'];
+        const myValues = [82, 75, 78, 80, 45, 65];
+        const reqValues = [90, 80, 85, 75, 75, 60];
+
+        const barCount = skills.length;
+        const groupWidth = chartW / barCount;
+        const barWidth = groupWidth * 0.28;
+        const gap = groupWidth * 0.08;
+
+        // Y轴网格线
+        for (let i = 0; i <= 4; i++) {
+            const y = padding.top + chartH - (chartH / 4) * i;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, y);
+            ctx.lineTo(w - padding.right, y);
+            ctx.strokeStyle = 'rgba(0,0,0,0.04)';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+
+            ctx.fillStyle = '#aaa';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.fillText((i * 25).toString(), padding.left - 8, y);
+        }
+
+        // 绘制柱状图
+        for (let i = 0; i < barCount; i++) {
+            const groupX = padding.left + i * groupWidth;
+
+            // 岗位要求（灰色背景条）
+            const reqH = (reqValues[i] / 100) * chartH;
+            const reqX = groupX + groupWidth / 2 - barWidth - gap / 2;
+            const reqY = padding.top + chartH - reqH;
+            ctx.fillStyle = 'rgba(0,0,0,0.06)';
+            this._roundRect(ctx, reqX, reqY, barWidth, reqH, 4);
+            ctx.fill();
+
+            // 我的水平（金色渐变条）
+            const myH = (myValues[i] / 100) * chartH;
+            const myX = groupX + groupWidth / 2 + gap / 2;
+            const myY = padding.top + chartH - myH;
+            const grad = ctx.createLinearGradient(myX, myY, myX, myY + myH);
+            grad.addColorStop(0, '#d4b870');
+            grad.addColorStop(1, '#c9a96e');
+            ctx.fillStyle = grad;
+            this._roundRect(ctx, myX, myY, barWidth, myH, 4);
+            ctx.fill();
+
+            // X轴标签
+            ctx.fillStyle = '#666';
+            ctx.font = '10px Inter, PingFang SC, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            ctx.fillText(skills[i], groupX + groupWidth / 2, padding.top + chartH + 10);
+        }
+    }
+
+    _roundRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
     }
 
     animateHeroClarityRing() {
@@ -2003,18 +2277,18 @@ class FutureGoApp {
     setupTwinRoleCards() {
         // 角色卡片详情数据
         this.roleDetails = {
-            '数据产品经理': {
+            '策略产品经理': {
                 emoji: '🏢',
                 type: 'dream',
-                title: '数据产品经理',
+                title: '策略产品经理',
                 subtitle: '你内心最向往的方向',
                 color: 'var(--accent-teal)',
                 wishMatch: 88,
                 abilityMatch: 65,
-                description: '数据产品经理是连接数据能力与产品策略的桥梁角色。你有多段策略产品实习经验+信息分析学术背景，对这个方向有天然的热情和积累。产品sense和数据能力的双重优势将帮助你在这个方向脱颖而出。',
+                description: '策略产品经理是连接数据能力与产品策略的桥梁角色。你有多段策略产品实习经验+信息分析学术背景，对这个方向有天然的热情和积累。产品sense和数据能力的双重优势将帮助你在这个方向脱颖而出。',
                 strengths: ['策略产品实习经验丰富', 'AI产品全流程经验', '数据分析+商业思维兼具'],
                 gaps: ['缺少大厂产品实习经历', '用户研究方法论待系统化', '技术深度需持续积累'],
-                roadmap: '建议路径：数据分析师/策略产品实习（1-2年）→ 数据产品经理。利用已有策略产品经验作为跳板，在数据岗位积累业务理解后自然过渡。'
+                roadmap: '建议路径：数据分析师/策略产品实习（1-2年）→ 策略产品经理。利用已有策略产品经验作为跳板，在数据岗位积累业务理解后自然过渡。'
             },
             '数据分析师': {
                 emoji: '📊',
@@ -2145,7 +2419,7 @@ class FutureGoApp {
             </div>
             <div class="rm-section">
                 <h4>AI 洞察</h4>
-                <p>你的意愿强度（85）略高于能力水平（78），这是非常健康的信号——你有足够的热情驱动自己去弥补能力差距。你的策略产品实习经验是独特的差异化竞争力，将机器学习工程能力从62%提升至75%以上，将直接缩小你与数据产品经理目标岗位之间的能力鸿沟。</p>
+                <p>你的意愿强度（85）略高于能力水平（78），这是非常健康的信号——你有足够的热情驱动自己去弥补能力差距。你的策略产品实习经验是独特的差异化竞争力，将机器学习工程能力从62%提升至75%以上，将直接缩小你与策略产品经理目标岗位之间的能力鸿沟。</p>
             </div>
             <div class="rm-section">
                 <h4>关键对比</h4>
@@ -2261,10 +2535,10 @@ class FutureGoApp {
                 iconColor: 'var(--accent-gold)',
                 title: '潜力方向 Potential',
                 subtitle: '增长路径 · 职业发展可能性',
-                analysis: '数据分析师是你当前的最优匹配方向——CS+信息分析背景与数据岗位高度吻合。数据产品经理可作为中期差异化方向，你的策略产品实习经验是强力背书。AI产品经理是新兴高价值方向，结合你的AI产品经验和NLP科研背景。技术研究-数据科学可作为长期目标。',
+                analysis: '数据分析师是你当前的最优匹配方向——CS+信息分析背景与数据岗位高度吻合。策略产品经理可作为中期差异化方向，你的策略产品实习经验是强力背书。AI产品经理是新兴高价值方向，结合你的AI产品经验和NLP科研背景。技术研究-数据科学可作为长期目标。',
                 metrics: [
                     { label: '数据分析师匹配', value: '94%', width: '94%' },
-                    { label: '数据产品经理匹配', value: '82%', width: '82%' },
+                    { label: '策略产品经理匹配', value: '82%', width: '82%' },
                     { label: 'AI产品经理匹配', value: '78%', width: '78%' },
                     { label: '技术研究-数据科学', value: '65%', width: '65%' },
                 ],

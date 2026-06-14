@@ -289,17 +289,15 @@ body {
     position: relative;
 }
 
-/* ===== Resume Disclaimer (开头声明) ===== */
-.resume-disclaimer {
-    margin: 40px 80px 0;
-    padding: 20px 28px;
+/* ===== Resume Disclaimer (简历声明卡片) ===== */
+.bento-disclaimer {
     background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.03));
-    border: 1px solid rgba(201,169,110,0.2);
-    border-radius: 12px;
+    border-color: rgba(201,169,110,0.2);
+}
+.resume-disclaimer {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    animation: fadeInUp 0.6s ease both;
 }
 
 .disclaimer-icon {
@@ -506,15 +504,70 @@ body {
 
 /* Bento 卡片类型微调 */
 .bento-greeting { }
-.bento-countdown { 
+.bento-countdown {
     background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(201,169,110,0.02));
     border-color: rgba(201,169,110,0.12);
 }
-.bento-quote { 
+/* 右侧信息栏：倒计时 + 每日鹅语 垂直堆叠 */
+.bento-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 20px 22px !important;
+    background: linear-gradient(160deg, rgba(255,255,255,0.45) 0%, rgba(255,248,235,0.25) 100%);
+}
+.sidebar-countdown {
+    flex-shrink: 0;
+}
+.sidebar-divider {
+    height: 1px;
+    margin: 16px 4px;
+    background: linear-gradient(90deg, transparent, rgba(201,169,110,0.15), transparent);
+}
+.sidebar-quote {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, rgba(201,169,110,0.04), transparent);
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.05), transparent);
+}
+.sidebar-quote .quote-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.sidebar-quote .quote-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* 独立的timeline卡片（span-2） */
+.bento-timeline {
+    padding: 20px 24px !important;
+}
+.bento-timeline .timeline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+.bento-timeline .timeline-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.bento-timeline .timeline-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    background: rgba(201,169,110,0.1);
+    color: var(--accent-gold);
+}
+.bento-timeline .timeline-list {
+    max-height: 260px;
+    overflow-y: auto;
 }
 .bento-stats { 
     padding: 12px 16px;
@@ -528,6 +581,211 @@ body {
     overflow-y: auto;
 }
 
+/* ---- 合并元信息卡片（阶段+快捷+鹅引导）---- */
+.bento-meta {
+    padding: 16px 20px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+}
+.meta-section {
+    padding: 8px 16px;
+    flex: 1;
+}
+.meta-section:first-child {
+    padding-left: 0;
+}
+.meta-section:last-child {
+    padding-right: 0;
+}
+.meta-divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(0,0,0,0.06);
+    margin: 4px 0;
+}
+.meta-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+}
+/* 快捷入口紧凑版 */
+.quick-nav-chips.compact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.quick-nav-chips.compact .quick-chip {
+    font-size: 11px;
+    padding: 7px 10px;
+    border-radius: 14px;
+}
+/* 阶段选择器在 meta 内紧凑 */
+.meta-stage .stage-header-row {
+    margin-bottom: 8px;
+}
+.meta-stage .stage-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 16px;
+}
+.meta-stage .stage-options {
+    gap: 4px;
+    margin-top: 6px;
+}
+/* 鹅引导紧凑版 */
+.meta-guide .goose-guide-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.meta-guide .guide-chip {
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 14px;
+}
+/* 近期动态紧凑版 */
+.meta-timeline .meta-timeline-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.meta-timeline .meta-timeline-header .timeline-badge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(201,169,110,0.1);
+    color: var(--accent-gold);
+}
+.meta-timeline .timeline-list {
+    max-height: 220px;
+    overflow-y: auto;
+}
+.meta-timeline .timeline-item {
+    padding: 7px 0;
+    gap: 8px;
+}
+.meta-timeline .timeline-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+.meta-timeline .timeline-time {
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+.meta-timeline .timeline-content p {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* ---- Insight 图表区 ---- */
+.insight-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 32px 0;
+    max-width: 1040px;
+    width: 100%;
+}
+.insight-chart-card {
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 24px;
+    padding: 24px 20px 18px;
+    transition: all 0.35s var(--ease-out-expo);
+}
+.insight-chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    border-color: rgba(201,169,110,0.15);
+}
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.chart-card-icon { font-size: 16px; }
+.chart-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+.chart-card-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+.chart-card-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0 10px;
+}
+.radar-chart-canvas, .bars-chart-canvas {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 6px rgba(201,169,110,0.08));
+}
+.chart-card-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding-top: 2px;
+}
+.chart-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.chart-legend-item i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+/* 响应式：图表区 */
+@media (max-width: 768px) {
+    .insight-charts-row {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .quick-nav-chips.compact {
+        grid-template-columns: 1fr 1fr;
+    }
+    .bento-meta {
+        padding: 12px 14px;
+        flex-direction: column;
+    }
+    .meta-section {
+        padding: 8px 0;
+        flex: none;
+    }
+    .meta-divider {
+        width: auto;
+        height: 1px;
+        margin: 2px 0;
+    }
+}
+
 /* Bento Grid 响应式 */
 @media (max-width: 1024px) {
     .hero-content-bento {
@@ -538,6 +796,30 @@ body {
     .bento-span-2, .bento-span-3, .bento-span-full { grid-column: span 2; }
     .bento-span-1 { grid-column: span 2; }
     .bento-timeline { max-height: 320px; }
+    .bento-meta {
+        flex-direction: column;
+    }
+    .meta-section {
+        padding: 8px 0;
+        flex: none;
+    }
+    .meta-divider {
+        width: auto;
+        height: 1px;
+        margin: 2px 0;
+    }
+    /* 右侧栏在平板上变为横向排列 */
+    .bento-sidebar {
+        flex-direction: row !important;
+        align-items: center;
+        gap: 16px;
+    }
+    .sidebar-divider {
+        width: 1px;
+        height: auto;
+        margin: 0 4px;
+        background: linear-gradient(180deg, transparent, rgba(201,169,110,0.15), transparent);
+    }
 }
 
 @media (max-width: 768px) {
@@ -547,6 +829,17 @@ body {
         gap: 10px;
     }
     .bento-span-1, .bento-span-2, .bento-span-3, .bento-span-full { grid-column: span 1; }
+    /* 手机上sidebar恢复纵向 */
+    .bento-sidebar {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+    .sidebar-divider {
+        width: auto;
+        height: 1px;
+        margin: 12px 4px;
+        background: linear-gradient(90deg, transparent, rgba(201,169,110,0.15), transparent);
+    }
     .bento-timeline { max-height: 280px; }
     .bento-card { padding: 16px; }
 }
@@ -668,8 +961,14 @@ body {
 }
 
 /* Bento 内的 stage 不需要额外包装 */
-.bento-stage .stage-label { margin-bottom: 2px; }
-.bento-stage .stage-options { display: flex; gap: 8px; flex-wrap: wrap; }
+.bento-stage .stage-label { margin-bottom: 0; }
+
+.stage-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 
 .stage-label {
     font-size: 13px;
@@ -678,10 +977,62 @@ body {
     letter-spacing: 0.3px;
 }
 
+/* 切换按钮 */
+.stage-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 16px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: var(--font-sans);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.stage-toggle-btn:hover {
+    background: rgba(201,169,110,0.1);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.stage-toggle-btn .toggle-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 10px;
+}
+
+.stage-toggle-btn.expanded .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 当前阶段容器 */
+.stage-current {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* 阶段选项容器 */
 .stage-options {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    animation: stageExpandIn 0.35s ease;
+}
+
+@keyframes stageExpandIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .stage-btn {
@@ -858,9 +1209,18 @@ body {
     border-left: 2px solid #d4856a;
 }
 
+.hero-stat-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+}
+
 .hero-stat-icon {
     font-size: 14px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     width: 28px;
     height: 28px;
     display: flex;
@@ -891,8 +1251,8 @@ body {
 
 .hero-stat-body {
     display: flex;
-    align-items: baseline;
-    gap: 2px;
+    align-items: center;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -5660,10 +6020,10 @@ body {
     background: var(--bg-dark);
     color: var(--text-light);
     padding: 60px 60px 32px;
-    margin: 0 calc(-1 * var(--nav-width)) calc(-1 * var(--nav-width));
-    width: auto;
-    left: 0;
-    right: 0;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    z-index: 10;
     box-sizing: border-box;
 }
 
@@ -5853,9 +6213,7 @@ body {
     .stat-number {
         font-size: 32px;
     }
-    .resume-disclaimer {
-        margin: 24px 20px 0;
-        padding: 16px 18px;
+    .bento-disclaimer .resume-disclaimer {
         flex-direction: column;
         gap: 8px;
     }
@@ -6595,4 +6953,143 @@ button:active {
         font-size: 12px;
         padding: 10px 16px;
     }
+}
+
+/* ================================================================
+   v2.3 柔和氛围升级：圆角统一、呼吸色块、轻动效、情绪设计
+   ================================================================ */
+
+/* ---- 全局圆角升级：更大更柔和 ---- */
+.bento-card {
+    border-radius: 24px !important;
+}
+.stage-btn {
+    border-radius: 22px !important;
+    transition: all 0.35s var(--ease-out-expo) !important;
+}
+.hero-stat-card {
+    border-radius: 20px !important;
+}
+.quick-chip, .guide-chip {
+    border-radius: 18px !important;
+}
+.dream-position-card {
+    border-radius: 22px !important;
+}
+
+/* ---- 柔光色块背景升级 ---- */
+.bento-greeting {
+    background: linear-gradient(160deg, rgba(255,255,255,0.6) 0%, rgba(245,243,239,0.5) 50%, rgba(255,250,245,0.45) 100%) !important;
+}
+.bento-stage {
+    background: linear-gradient(160deg, rgba(255,255,255,0.5) 0%, rgba(250,248,244,0.45) 100%) !important;
+}
+.bento-actions {
+    background: linear-gradient(160deg, rgba(255,255,255,0.45) 0%, rgba(248,246,242,0.4) 100%) !important;
+}
+.bento-dream {
+    background: linear-gradient(160deg, rgba(255,255,255,0.55) 0%, rgba(255,248,240,0.45) 100%) !important;
+}
+
+/* ---- 呼吸光晕动效 (breathe glow) ---- */
+.bento-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(ellipse at 30% 20%, rgba(201,169,110,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse at 70% 80%, rgba(212,133,106,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+.bento-card:hover::before {
+    opacity: 1;
+}
+
+/* ---- 卡片呼吸脉冲（仅关键卡片） ---- */
+@keyframes breatheGlow {
+    0%, 100% { box-shadow: 0 2px 12px rgba(201,169,110,0.04); }
+    50% { box-shadow: 0 4px 24px rgba(201,169,110,0.10); }
+}
+.bento-sidebar, .bento-timeline {
+    animation: breatheGlow 3s ease-in-out infinite;
+}
+
+/* ---- Aurora 增强：增加柔和粉色光晕 ---- */
+.hero-aurora-bg {
+    background:
+        radial-gradient(ellipse at 15% 25%, rgba(201,169,110,0.20) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 15%, rgba(212,133,106,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 60%, rgba(255,200,180,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at 35% 75%, rgba(107,158,158,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 55% 40%, rgba(201,169,110,0.06) 0%, transparent 60%) !important;
+    filter: blur(70px);
+}
+
+/* ---- 欢迎区头像升级：柔光渐变 ---- */
+.greeting-avatar {
+    background: linear-gradient(135deg, #d4b870, #c9a96e, #d4856a) !important;
+    box-shadow: 0 4px 20px rgba(201,169,110,0.30) !important;
+}
+
+/* ---- 一句话总结柔和边框 ---- */
+.hero-summary-line {
+    border-radius: 16px !important;
+    border-left: 3px solid var(--accent-gold) !important;
+    background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.3) 100%) !important;
+}
+
+/* ---- 心仪岗位卡片呼吸光晕 ---- */
+.dream-position-card {
+    transition: all 0.4s var(--ease-out-expo);
+    box-shadow: 0 2px 16px rgba(201,169,110,0.06);
+}
+.bento-dream:hover .dream-position-card {
+    box-shadow: 0 6px 28px rgba(201,169,110,0.12);
+}
+
+/* ---- 按钮全局圆角柔和化 ---- */
+.nav-link, .cta-btn, .goose-chip, .quick-chip, .guide-chip {
+    border-radius: 20px !important;
+}
+
+/* ---- 时间线圆角升级 ---- */
+.timeline-item {
+    border-radius: 14px !important;
+    padding: 10px 12px !important;
+    transition: background 0.3s ease !important;
+}
+.timeline-item:hover {
+    background: rgba(201,169,110,0.04) !important;
+}
+
+/* ---- 数据卡片柔光微交互 ---- */
+.hero-stat-card {
+    transition: all 0.35s var(--ease-out-expo) !important;
+    background: linear-gradient(160deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.3) 100%) !important;
+}
+.hero-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(201,169,110,0.10);
+}
+
+/* ---- 阶段按钮柔和升级 ---- */
+.stage-btn.active {
+    background: linear-gradient(135deg, var(--accent-gold), #b89550) !important;
+    box-shadow: 0 3px 14px rgba(201,169,110,0.35) !important;
+}
+
+/* ---- 倒计时卡片柔光背景（已整合进sidebar） ---- */
+.sidebar-countdown {
+    background: linear-gradient(160deg, rgba(255,255,255,0.5) 0%, rgba(201,169,110,0.06) 100%) !important;
+    border-color: rgba(201,169,110,0.15) !important;
+    padding: 14px 16px;
+    border-radius: 12px;
+}
+
+/* ---- 每日鹅语柔光升级（已整合进sidebar） ---- */
+.sidebar-quote {
+    background: linear-gradient(160deg, rgba(255,255,255,0.4) 0%, rgba(255,245,235,0.3) 100%) !important;
 }
