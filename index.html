@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来鹅 FutureGo | 腾讯校招 AI 陪伴体 — 你的专属职业成长伙伴</title>
+    <title>未来鹅 FutureGoose | 腾讯校招 AI 成长陪伴体 — 陪你从大一到校招，逐步靠近鹅厂</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
     <nav class="fixed-nav" id="topNav">
         <div class="nav-left">
             <span class="logo-icon">◆</span>
-            <span class="brand-label">FutureGo <span class="sub-label">· 未来鹅</span></span>
+            <span class="brand-label">未来鹅 <span class="sub-label">· FutureGoose</span></span>
         </div>
         <div class="nav-center">
             <span class="nav-user-greeting" id="userGreeting">欢迎回来，陈同学</span>
@@ -24,15 +24,15 @@
             <button class="nav-link" data-section="twin">职业分身</button>
             <button class="nav-link" data-section="insight">成长洞察</button>
             <button class="nav-link" data-section="mission">成长任务</button>
-            <button class="nav-link" data-section="opportunity">腾讯校招</button>
-            <button class="cta-btn" onclick="scrollToSection('opportunity')">看看腾讯校招</button>
+            <button class="nav-link" data-section="opportunity">靠近鹅厂</button>
+            <button class="cta-btn" onclick="scrollToSection('opportunity')">你正在靠近鹅厂</button>
         </div>
     </nav>
 
     <!-- 左侧章节导航 -->
     <aside class="chapter-nav" id="chapterNav">
         <div class="nav-title-area">
-            <div class="edition-title">未来鹅<br><span class="slash">///</span><br>FutureGo</div>
+            <div class="edition-title">未来鹅<br><span class="slash">///</span><br>FutureGoose</div>
             <p class="nav-subtitle">腾讯校招<br>AI 陪伴体</p>
         </div>
         <ul class="chapter-list" id="chapterList">
@@ -40,38 +40,39 @@
                 <span>概览</span><span class="roman">I</span>
             </li>
             <li data-chapter="twin">
-                <span>Career Twin</span><span class="roman">II</span>
+                <span>未来鹅的观察</span><span class="roman">II</span>
             </li>
             <li data-chapter="insight">
-                <span>Growth Insight</span><span class="roman">III</span>
+                <span>鹅的判断</span><span class="roman">III</span>
             </li>
             <li data-chapter="mission">
-                <span>Growth Mission</span><span class="roman">IV</span>
+                <span>鹅给你的任务</span><span class="roman">IV</span>
             </li>
             <li data-chapter="journey">
                 <span>Growth Journey</span><span class="roman">V</span>
             </li>
             <li data-chapter="opportunity">
-                <span>腾讯校招机会</span><span class="roman">VI</span>
+                <span>靠近鹅厂</span><span class="roman">VI</span>
             </li>
         </ul>
         <footer class="nav-footer">
-            <p>© 未来鹅 FutureGo 2026</p>
-            <p class="nav-tagline">腾讯校招 AI 陪伴体</p>
+            <p>© 未来鹅 FutureGoose 2026</p>
+            <p class="nav-tagline">腾讯校招 AI 成长陪伴体</p>
         </footer>
     </aside>
 
     <!-- 主内容区域 -->
     <main class="main-content">
 
-        <!-- ===== HERO: 专属概览仪表盘 ===== -->
+        <!-- ===== HERO: 专属概览仪表盘 (Bento Grid 便当盒布局) ===== -->
         <section id="hero" class="chapter-section hero-section">
+            <!-- Aurora Gradient 极光弥散渐变背景 -->
+            <div class="hero-aurora-bg" id="heroAuroraBg"></div>
             <div class="hero-bg" data-parallax="0.3"></div>
             <div class="hero-particles" id="heroParticles"></div>
-            <div class="hero-content">
-                <!-- 左侧：欢迎区 + 核心摘要 -->
-                <div class="hero-main">
-                    <!-- 个性化欢迎 -->
+            <div class="hero-content-bento">
+                <!-- Bento Row 1: 欢迎区 (span 2) + 倒计时 (span 1) + 每日鹅语 (span 1) -->
+                <div class="bento-card bento-greeting bento-span-2" data-animate>
                     <div class="hero-greeting">
                         <div class="greeting-avatar" id="greetingAvatar">陈</div>
                         <div class="greeting-text">
@@ -83,16 +84,45 @@
                             <span class="greeting-badge-text">研二(27届) · 信息分析专业</span>
                         </div>
                     </div>
-
                     <!-- 一句话专属总结 -->
                     <div class="hero-summary-line" id="heroSummaryLine">
                         <span class="summary-quote-mark">"</span>
-                        <p>你的腾讯校招备战已进入<strong>关键窗口期</strong>，当前<strong>数据分析师-TEG</strong>是你的最优路径。你有扎实的CS功底+信息分析学术背景，还有策略产品实习经验加持，距离目标还有 <strong class="gap-highlight">22%</strong> 的能力差距需要补齐</p>
+                        <p>陪你从大一到校招，逐步靠近鹅厂 — 你的腾讯校招备战已进入<strong>关键窗口期</strong>，当前<strong>数据分析师-TEG</strong>是你的最优路径。你有扎实的CS功底+信息分析学术背景，还有策略产品实习经验加持，距离目标还有 <strong class="gap-highlight">22%</strong> 的能力差距需要补齐</p>
                     </div>
+                </div>
 
-                    <!-- 核心数据卡片行 -->
+                <div class="bento-card bento-countdown" id="countdownCard" data-animate>
+                    <div class="countdown-header">
+                        <span class="countdown-icon">⏳</span>
+                        <span class="countdown-title">距离 2027 届秋招</span>
+                    </div>
+                    <div class="countdown-digits">
+                        <div class="countdown-digit-block">
+                            <span class="countdown-digit" id="cdDays">--</span>
+                            <span class="countdown-unit">天</span>
+                        </div>
+                        <span class="countdown-sep">:</span>
+                        <div class="countdown-digit-block">
+                            <span class="countdown-digit" id="cdHours">--</span>
+                            <span class="countdown-unit">时</span>
+                        </div>
+                        <span class="countdown-sep">:</span>
+                        <div class="countdown-digit-block">
+                            <span class="countdown-digit" id="cdMins">--</span>
+                            <span class="countdown-unit">分</span>
+                        </div>
+                    </div>
+                    <p class="countdown-hint" id="countdownHint">鹅厂秋招预计 8 月启动，现在正是准备的黄金时间 🐧</p>
+                </div>
+
+                <div class="bento-card bento-quote" id="dailyGooseQuote" data-animate>
+                    <span class="quote-icon">🐧</span>
+                    <span class="quote-text" id="quoteText">今天你比昨天更接近鹅厂一点</span>
+                </div>
+
+                <!-- Bento Row 2: 核心数据卡片行 (4列) -->
+                <div class="bento-card bento-stats bento-span-full" data-animate>
                     <div class="hero-stat-row">
-                        <!-- 成长清晰度 -->
                         <div class="hero-stat-card" id="heroClarityCard">
                             <div class="hero-stat-icon clarity-icon">◈</div>
                             <div class="hero-stat-body">
@@ -108,19 +138,17 @@
                                 </svg>
                             </div>
                         </div>
-                        <!-- 综合匹配度 -->
                         <div class="hero-stat-card" id="heroMatchCard">
                             <div class="hero-stat-icon match-icon">◆</div>
                             <div class="hero-stat-body">
                                 <span class="hero-stat-value" id="heroMatchValue">88</span>
                                 <span class="hero-stat-unit">%</span>
-                                <span class="hero-stat-label">鹅厂匹配度</span>
+                                <span class="hero-stat-label">鹅厂距离</span>
                             </div>
                             <div class="hero-stat-bar">
                                 <div class="hero-stat-bar-fill match" id="heroMatchBar" style="width:88%"></div>
                             </div>
                         </div>
-                        <!-- 本周任务 -->
                         <div class="hero-stat-card" id="heroMissionCard">
                             <div class="hero-stat-icon mission-icon">◎</div>
                             <div class="hero-stat-body">
@@ -129,7 +157,6 @@
                             </div>
                             <div class="hero-stat-sub" id="heroMissionSub">本周已完成 2/5</div>
                         </div>
-                        <!-- 机会窗口 -->
                         <div class="hero-stat-card urgent" id="heroUrgentCard">
                             <div class="hero-stat-icon urgent-icon">△</div>
                             <div class="hero-stat-body">
@@ -139,80 +166,48 @@
                             <div class="hero-stat-sub urgent-text" id="heroUrgentSub">秋招窗口即将开放</div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- 我最心仪的岗位 -->
-                    <div class="hero-dream-position" id="heroDreamPosition">
-                        <div class="dream-position-header">
-                            <div class="dream-position-title">
-                                <span class="dream-icon">💭</span>
-                                <span>我最心仪的岗位</span>
-                            </div>
-                            <button class="dream-switch-btn" id="dreamSwitchBtn">
-                                <span class="switch-icon">⇄</span>
-                                <span>更换岗位</span>
-                            </button>
-                        </div>
-                        <div class="dream-position-card" id="dreamPositionCard">
-                            <div class="dream-card-left">
-                                <div class="dream-role-badge">
-                                    <span class="dream-role-icon">🏢</span>
-                                    <span class="dream-role-dept" id="dreamRoleDept">PCG 平台与内容事业群</span>
-                                </div>
-                                <h3 class="dream-role-name" id="dreamRoleName">数据产品经理</h3>
-                                <div class="dream-role-tags" id="dreamRoleTags">
-                                    <span class="dream-tag">产品策划</span>
-                                    <span class="dream-tag">数据分析</span>
-                                    <span class="dream-tag">用户增长</span>
-                                </div>
-                            </div>
-                            <div class="dream-card-right">
-                                <div class="dream-match-circle">
-                                    <svg viewBox="0 0 80 80">
-                                        <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="4"/>
-                                        <circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent-gold)" stroke-width="4"
-                                                stroke-dasharray="213.6" stroke-dashoffset="74.8" stroke-linecap="round"
-                                                transform="rotate(-90 40 40)" id="dreamMatchRing"/>
-                                    </svg>
-                                    <div class="dream-match-inner">
-                                        <span class="dream-match-value" id="dreamMatchValue">65</span>
-                                        <span class="dream-match-unit">%</span>
-                                        <span class="dream-match-label">意愿匹配</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dream-position-note" id="dreamPositionNote">
-                            你有策略产品实习经验+信息分析学术背景，产品与数据结合是你的天然优势
-                        </div>
+                <!-- Bento Row 3: 阶段选择器 (span 2) + 快捷导航+鹅引导 (span 2) -->
+                <div class="bento-card bento-stage bento-span-2" data-animate>
+                    <span class="stage-label">🐣 你现在在哪一阶段？</span>
+                    <div class="stage-options">
+                        <button class="stage-btn" data-stage="freshman">
+                            <span class="stage-icon">🟡</span>
+                            <span class="stage-name">大一</span>
+                            <span class="stage-desc">认知探索期</span>
+                        </button>
+                        <button class="stage-btn" data-stage="sophomore">
+                            <span class="stage-icon">🟠</span>
+                            <span class="stage-name">大二</span>
+                            <span class="stage-desc">专业理解期</span>
+                        </button>
+                        <button class="stage-btn" data-stage="junior">
+                            <span class="stage-icon">🔵</span>
+                            <span class="stage-name">大三</span>
+                            <span class="stage-desc">实习探索期</span>
+                        </button>
+                        <button class="stage-btn active" data-stage="senior">
+                            <span class="stage-icon">🔴</span>
+                            <span class="stage-name">研二/大四</span>
+                            <span class="stage-desc">校招冲刺期</span>
+                        </button>
                     </div>
+                </div>
 
-                    <!-- 岗位选择弹窗 -->
-                    <div class="dream-select-overlay" id="dreamSelectOverlay">
-                        <div class="dream-select-backdrop"></div>
-                        <div class="dream-select-panel" id="dreamSelectPanel">
-                            <div class="dream-select-header">
-                                <h3>选择你最心仪的岗位</h3>
-                                <p>设置后将在概览页展示，可随时更换</p>
-                                <button class="dream-select-close" id="dreamSelectClose">×</button>
-                            </div>
-                            <div class="dream-select-list" id="dreamSelectList">
-                                <!-- JS动态渲染 -->
-                            </div>
-                        </div>
-                    </div>
-
+                <div class="bento-card bento-actions bento-span-2" data-animate>
                     <!-- 快捷导航 -->
                     <div class="hero-quick-nav">
                         <span class="quick-nav-label">快捷入口</span>
                         <div class="quick-nav-chips">
                             <button class="quick-chip" data-target="twin">
                                 <span class="chip-icon">🎯</span>
-                                <span>我的职业分身</span>
+                                <span>未来鹅的观察</span>
                                 <span class="chip-arrow">→</span>
                             </button>
                             <button class="quick-chip" data-target="insight">
                                 <span class="chip-icon">📊</span>
-                                <span>查看成长洞察</span>
+                                <span>鹅的判断</span>
                                 <span class="chip-arrow">→</span>
                             </button>
                             <button class="quick-chip" data-target="mission">
@@ -222,15 +217,84 @@
                             </button>
                             <button class="quick-chip highlight" data-target="opportunity">
                                 <span class="chip-icon">🔥</span>
-                                <span>腾讯校招机会</span>
+                                <span>靠近鹅厂</span>
                                 <span class="chip-arrow">→</span>
                             </button>
                         </div>
                     </div>
+                    <!-- 弱引导 -->
+                    <div class="goose-guide">
+                        <span class="goose-guide-label">🐣 今天鹅想帮你做什么？</span>
+                        <div class="goose-guide-chips">
+                            <button class="guide-chip" data-action="fit">看我适合什么岗位</button>
+                            <button class="guide-chip" data-action="advice">给我一个实习建议</button>
+                            <button class="guide-chip" data-action="task">帮我拆一个学习任务</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- 右侧：近期动态时间线 -->
-                <div class="hero-timeline">
+                <!-- Bento Row 4: 心仪岗位 (span 3) + 时间线 (span 1) -->
+                <div class="bento-card bento-dream bento-span-3" id="heroDreamPosition" data-animate>
+                    <div class="dream-position-header">
+                        <div class="dream-position-title">
+                            <span class="dream-icon">💭</span>
+                            <span>我最心仪的岗位</span>
+                        </div>
+                        <button class="dream-switch-btn" id="dreamSwitchBtn">
+                            <span class="switch-icon">⇄</span>
+                            <span>更换岗位</span>
+                        </button>
+                    </div>
+                    <div class="dream-position-card" id="dreamPositionCard">
+                        <div class="dream-card-left">
+                            <div class="dream-role-badge">
+                                <span class="dream-role-icon">🏢</span>
+                                <span class="dream-role-dept" id="dreamRoleDept">PCG 平台与内容事业群</span>
+                            </div>
+                            <h3 class="dream-role-name" id="dreamRoleName">数据产品经理</h3>
+                            <div class="dream-role-tags" id="dreamRoleTags">
+                                <span class="dream-tag">产品策划</span>
+                                <span class="dream-tag">数据分析</span>
+                                <span class="dream-tag">用户增长</span>
+                            </div>
+                        </div>
+                        <div class="dream-card-right">
+                            <div class="dream-match-circle">
+                                <svg viewBox="0 0 80 80">
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(0,0,0,0.05)" stroke-width="4"/>
+                                    <circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent-gold)" stroke-width="4"
+                                            stroke-dasharray="213.6" stroke-dashoffset="74.8" stroke-linecap="round"
+                                            transform="rotate(-90 40 40)" id="dreamMatchRing"/>
+                                </svg>
+                                <div class="dream-match-inner">
+                                    <span class="dream-match-value" id="dreamMatchValue">65</span>
+                                    <span class="dream-match-unit">%</span>
+                                    <span class="dream-match-label">意愿匹配</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dream-position-note" id="dreamPositionNote">
+                        你有策略产品实习经验+信息分析学术背景，产品与数据结合是你的天然优势
+                    </div>
+                </div>
+
+                <!-- 岗位选择弹窗 -->
+                <div class="dream-select-overlay" id="dreamSelectOverlay">
+                    <div class="dream-select-backdrop"></div>
+                    <div class="dream-select-panel" id="dreamSelectPanel">
+                        <div class="dream-select-header">
+                            <h3>选择你最心仪的岗位</h3>
+                            <p>设置后将在概览页展示，可随时更换</p>
+                            <button class="dream-select-close" id="dreamSelectClose">×</button>
+                        </div>
+                        <div class="dream-select-list" id="dreamSelectList">
+                            <!-- JS动态渲染 -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bento-card bento-timeline bento-span-1" data-animate>
                     <div class="timeline-header">
                         <h3>近期动态</h3>
                         <span class="timeline-badge" id="timelineBadge">本周</span>
@@ -274,7 +338,7 @@
                     </div>
                 </div>
             </div>
-            <!-- 简历声明（位于近期动态下方） -->
+            <!-- 简历声明 -->
             <div class="resume-disclaimer" data-animate>
                 <span class="disclaimer-icon">📋</span>
                 <p>本页面展示内容基于<strong>陈同学</strong>的真实简历信息进行个性化定制，包含个人学术背景、实习经历、技能特长等真实数据（部分公司/产品名称已做脱敏处理）。所有成长轨迹、岗位匹配、洞察分析均基于真实背景生成。</p>
@@ -291,8 +355,8 @@
             <div class="section-inner">
                 <div class="section-header">
                     <span class="section-roman">II</span>
-                    <h2 class="chapter-title">Career Twin</h2>
-                    <p class="chapter-subtitle">你的腾讯校招数字分身 — 外部能力 × 内心所向，找到鹅厂最佳岗位</p>
+                    <h2 class="chapter-title">未来鹅的观察</h2>
+                    <p class="chapter-subtitle">你的鹅厂数字分身 — 外部能力 × 内心所向，找到最佳靠近路径</p>
                 </div>
 
                 <!-- 岗位聚焦区：最想去 vs 最适配 -->
@@ -522,8 +586,8 @@
             <div class="section-inner">
                 <div class="section-header">
                     <span class="section-roman">III</span>
-                    <h2 class="chapter-title">Growth Insight</h2>
-                    <p class="chapter-subtitle">未来鹅为你生成的专属成长洞察 — 瞄准腾讯校招要求，看清你的优势与短板</p>
+                    <h2 class="chapter-title">鹅的判断</h2>
+                    <p class="chapter-subtitle">未来鹅为你生成的专属成长洞察 — 瞄准鹅厂要求，看清你的优势与短板</p>
                 </div>
 
                 <div class="insight-grid">
@@ -733,8 +797,9 @@
                     <div class="summary-card">
                         <div class="summary-quote">
                             <span class="quote-mark">"</span>
-                            <p>你的核心优势在于CS工科背景+信息分析学术训练+策略产品实习经验的复合能力组合。未来鹅建议：当前最大机会窗口是抓住腾讯暑期实习季，以数据分析师岗位为目标集中准备。你的AI产品经验是独特竞争力，建议未来3个月聚焦：SQL深度提升 + 1个工业级数据分析项目 + 2次模拟面试，争取拿到鹅厂offer！</p>
+                            <p>你的核心优势在于CS工科背景+信息分析学术训练+策略产品实习经验的复合能力组合。鹅的建议：当前最大机会窗口是抓住腾讯暑期实习季，以数据分析师岗位为目标集中准备。你的AI产品经验是独特竞争力，建议未来3个月聚焦：SQL深度提升 + 1个工业级数据分析项目 + 2次模拟面试，争取拿到鹅厂offer！</p>
                         </div>
+                        <p class="summary-goose-verdict">🐧 鹅的判断：你正在从探索期进入加速期，现在正是弯道超车的最佳时机</p>
                         <div class="summary-meta">
                             <span class="ai-badge">未来鹅 AI 生成 · 基于你的成长记忆</span>
                             <span class="update-time">更新于 2026-06-14</span>
@@ -750,8 +815,8 @@
             <div class="section-inner">
                 <div class="section-header">
                     <span class="section-roman">IV</span>
-                    <h2 class="chapter-title">Growth Mission</h2>
-                    <p class="chapter-subtitle">你的腾讯校招备战计划 — 将洞察转化为通往鹅厂的每一步</p>
+                    <h2 class="chapter-title">鹅给你的任务</h2>
+                    <p class="chapter-subtitle">你的鹅厂备战计划 — 将鹅的判断转化为靠近鹅厂的每一步</p>
                 </div>
 
                 <!-- 阶段切换标签 -->
@@ -904,14 +969,14 @@
             </div>
         </div>
 
-        <!-- ===== VI: 腾讯校招机会系统 ===== -->
+        <!-- ===== VI: 你正在靠近鹅厂 ===== -->
         <section id="opportunity" class="chapter-section chapter-dark opportunity-section">
             <div class="section-bg-pattern"></div>
             <div class="section-inner">
                 <div class="section-header">
                     <span class="section-roman">VI</span>
-                    <h2 class="chapter-title">腾讯校招机会</h2>
-                    <p class="chapter-subtitle">基于你的「未来鹅」画像，专属推荐腾讯校招匹配机会</p>
+                    <h2 class="chapter-title">你正在靠近鹅厂</h2>
+                    <p class="chapter-subtitle">基于你的「未来鹅」画像，专属推荐鹅厂靠近路径</p>
                 </div>
 
                 <div class="opportunity-tabs">
@@ -927,7 +992,7 @@
                     <div class="opp-card" data-category="internship" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type internship">暑期实习</span>
-                            <span class="opp-match" data-match-level="high">匹配 92%</span>
+                            <span class="opp-match" data-match-level="high">距鹅厂 92%</span>
                         </div>
                         <h4>数据分析暑期实习生</h4>
                         <p class="opp-company">腾讯 · PCG 平台与内容事业群 · 深圳</p>
@@ -941,7 +1006,7 @@
                     <div class="opp-card" data-category="internship" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type internship">暑期实习</span>
-                            <span class="opp-match" data-match-level="mid">匹配 85%</span>
+                            <span class="opp-match" data-match-level="mid">距鹅厂 85%</span>
                         </div>
                         <h4>数据产品策划实习生</h4>
                         <p class="opp-company">腾讯 · CDG 企业发展事业群 · 深圳</p>
@@ -956,7 +1021,7 @@
                     <div class="opp-card" data-category="graduate" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type graduate">应届校招</span>
-                            <span class="opp-match" data-match-level="good">匹配 88%</span>
+                            <span class="opp-match" data-match-level="good">距鹅厂 88%</span>
                         </div>
                         <h4>技术研究-数据科学方向</h4>
                         <p class="opp-company">腾讯 · TEG 技术工程事业群 · 深圳/北京</p>
@@ -970,7 +1035,7 @@
                     <div class="opp-card" data-category="graduate" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type graduate">应届校招</span>
-                            <span class="opp-match" data-match-level="mid">匹配 80%</span>
+                            <span class="opp-match" data-match-level="mid">距鹅厂 80%</span>
                         </div>
                         <h4>产品策划/运营</h4>
                         <p class="opp-company">腾讯 · WXG 微信事业群 · 广州</p>
@@ -985,7 +1050,7 @@
                     <div class="opp-card" data-category="pre" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type pre">Pre留学生</span>
-                            <span class="opp-match" data-match-level="high">匹配 90%</span>
+                            <span class="opp-match" data-match-level="high">距鹅厂 90%</span>
                         </div>
                         <h4>Pre留学生-技术专场</h4>
                         <p class="opp-company">腾讯 · 全球招募 · 远程/多地</p>
@@ -1000,7 +1065,7 @@
                     <div class="opp-card" data-category="club" data-animate>
                         <div class="opp-card-top">
                             <span class="opp-type club">高校俱乐部</span>
-                            <span class="opp-match" data-match-level="high">匹配 95%</span>
+                            <span class="opp-match" data-match-level="high">距鹅厂 95%</span>
                         </div>
                         <h4>腾讯高校创新俱乐部</h4>
                         <p class="opp-company">腾讯 · 校园合作 · 全国高校</p>
@@ -1082,11 +1147,54 @@
 
         <!-- Footer -->
         <footer class="main-footer">
+            <!-- Infinite Marquee 无限跑马灯 -->
+            <div class="footer-marquee-wrap">
+                <div class="footer-marquee" id="footerMarquee">
+                    <div class="marquee-track">
+                        <span class="marquee-item">🐧 未来鹅 FutureGoose</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">腾讯校招 AI 成长陪伴体</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">陪你从大一到校招</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">逐步靠近鹅厂</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">Career Companion</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">数据分析师 · TEG</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">数据产品经理 · PCG</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">成长清晰度 63%</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">鹅厂距离 88%</span>
+                    </div>
+                    <div class="marquee-track" aria-hidden="true">
+                        <span class="marquee-item">🐧 未来鹅 FutureGoose</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">腾讯校招 AI 成长陪伴体</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">陪你从大一到校招</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">逐步靠近鹅厂</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">Career Companion</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">数据分析师 · TEG</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">数据产品经理 · PCG</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">成长清晰度 63%</span>
+                        <span class="marquee-sep">·</span>
+                        <span class="marquee-item">鹅厂距离 88%</span>
+                    </div>
+                </div>
+            </div>
             <div class="footer-content">
                 <div class="footer-brand">
                     <span class="footer-logo">🐧</span>
-                    <span class="footer-name">未来鹅 FutureGo</span>
-                    <span class="footer-tagline">腾讯校招 AI 陪伴体</span>
+                    <span class="footer-name">未来鹅 FutureGoose</span>
+                    <span class="footer-tagline">腾讯校招 AI 成长陪伴体</span>
                 </div>
                 <div class="footer-designer">
                     <p>由 <strong>陈雅馨</strong> 设计并开发</p>
@@ -1094,7 +1202,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 未来鹅 FutureGo — 腾讯校招 AI 陪伴体 · 陪你走过从校园到鹅厂的每一步</p>
+                <p>© 2026 未来鹅 FutureGoose — 腾讯校招 AI 成长陪伴体 · 陪你走过从校园到鹅厂的每一步</p>
                 <p class="footer-disclaimer">本页面展示内容基于<strong>陈同学</strong>的真实简历信息进行个性化定制，包含个人学术背景、实习经历、技能特长等真实数据（部分公司/产品名称已做脱敏处理）。所有成长轨迹、岗位匹配、洞察分析均基于真实背景生成。</p>
             </div>
         </footer>
@@ -1125,6 +1233,21 @@
             <div class="modal-content" id="modalContent">
                 <!-- 动态填充 -->
             </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification 轻通知弹窗 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Skeleton Screen 骨架屏加载占位 -->
+    <div class="skeleton-overlay" id="skeletonOverlay" style="display:none;">
+        <div class="skeleton-grid">
+            <div class="skeleton-card skeleton-lg"></div>
+            <div class="skeleton-card skeleton-sm"></div>
+            <div class="skeleton-card skeleton-sm"></div>
+            <div class="skeleton-card skeleton-md"></div>
+            <div class="skeleton-card skeleton-md"></div>
+            <div class="skeleton-card skeleton-lg"></div>
         </div>
     </div>
 

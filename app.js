@@ -1,5 +1,5 @@
 /* ============================================================
-   FutureGo — AI Career OS
+   FutureGoose — AI Career Companion
    Renaissance Edition Interactive Engine
    ============================================================ */
 
@@ -31,6 +31,60 @@ class FutureGoApp {
         this.setupInsightCards();
         this.setupJourney();
         this.setupMission();
+        this.setupSkeletonScreen();
+    }
+
+    // ===== Toast 轻通知系统 =====
+    showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+
+        const icons = { success: '✓', warning: '!', error: '✕', info: 'i' };
+        const toast = document.createElement('div');
+        toast.className = `toast-item ${type}`;
+        toast.innerHTML = `<span class="toast-icon">${icons[type] || icons.info}</span>${message}`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            if (toast.parentNode) toast.remove();
+        }, 3000);
+    }
+
+    // ===== Skeleton Screen 骨架屏 =====
+    setupSkeletonScreen() {
+        const overlay = document.getElementById('skeletonOverlay');
+        if (!overlay) return;
+
+        // 先显示骨架屏（覆盖 HTML 中的 display:none）
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '1';
+
+        // 页面加载完成后隐藏骨架屏
+        const hideSkeleton = () => {
+            if (overlay.style.display === 'none') return; // 防止重复隐藏
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => { overlay.style.display = 'none'; }, 400);
+        };
+
+        // 在 DOM 准备好后延迟隐藏，模拟加载
+        if (document.readyState === 'complete') {
+            setTimeout(hideSkeleton, 600);
+        } else {
+            window.addEventListener('load', () => setTimeout(hideSkeleton, 400));
+        }
+
+        // 暴露给外部：切换 section 时可复用
+        window.showSkeleton = () => {
+            overlay.style.display = 'flex';
+            overlay.style.opacity = '1';
+        };
+        window.hideSkeleton = () => {
+            if (overlay.style.display === 'none') return;
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.4s ease';
+            setTimeout(() => { overlay.style.display = 'none'; }, 400);
+        };
     }
 
     // ===== 平滑滚动与导航 =====
@@ -389,7 +443,7 @@ class FutureGoApp {
                         <p style="font-size:13px;opacity:0.6;">${data.company} · ${data.location}</p>
                         <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
                             <span style="font-size:28px;font-weight:700;color:var(--accent-gold);">${data.match}%</span>
-                            <span style="font-size:13px;opacity:0.6;">未来鹅匹配度</span>
+                            <span style="font-size:13px;opacity:0.6;">鹅厂距离</span>
                         </div>
                     </div>
                     <div style="margin-top:20px;">
@@ -510,7 +564,7 @@ class FutureGoApp {
                     const tips = activeMissions.map(m => `• 「${m.title}」— 当前进度 ${m.progress}%，去打卡吧！`).join('\n');
                     return `今天建议你做这些 🎯\n\n${tips}\n\n每完成一项，就离鹅厂更近一步！`;
                 }
-                return '今天没有进行中的任务哦~ 要不要去「Growth Mission」创建新任务？我可以帮你制定计划！';
+                return '今天没有进行中的任务哦~ 要不要去「鹅给你的任务」创建新任务？我可以帮你制定计划！';
             }
             if (lower.includes('你好') || lower.includes('嗨') || lower.includes('hi') || lower.includes('hello')) {
                 const greetCount = this.gooseMemory.chatCount;
@@ -520,21 +574,21 @@ class FutureGoApp {
             if (lower.includes('打卡') || lower.includes('checkin')) {
                 const count = this.gooseMemory.totalCheckins;
                 const streak = this.gooseMemory.streak;
-                if (count === 0) return '你还没有打过卡呢！🐧 去「Growth Mission」试试吧，第一次打卡有惊喜哦~';
+                if (count === 0) return '你还没有打过卡呢！🐧 去「鹅给你的任务」试试吧，第一次打卡有惊喜哦~';
                 return `你已经打卡 ${count} 次啦！${streak > 0 ? '连续' + streak + '天打卡，太厉害了！' : ''} 今天打卡了吗？`;
             }
             if (lower.includes('目标') || lower.includes('岗位') || lower.includes('方向')) {
-                return `你当前的目标是「${this.gooseMemory.currentDream}」🎯\n\n在「Career Twin」模块可以查看你的职业画像和匹配度分析，在 Hero 区域可以随时更换心仪岗位~`;
+                return `你当前的目标是「${this.gooseMemory.currentDream}」🎯\n\n在「未来鹅的观察」模块可以查看你的职业画像和鹅厂距离分析，在 Hero 区域可以随时更换心仪岗位~`;
             }
             return null; // 未匹配，用默认回复
         };
 
         const defaultResponse = () => {
             const tips = [
-                '去「腾讯校招机会」看看最新岗位 🔥',
-                '到「Career Twin」检查你的岗位匹配度 📊',
-                '在「Growth Mission」制定备战计划 ✅',
-                '看看「Growth Insight」了解你的优劣势 💡'
+                '去「靠近鹅厂」看看最新鹅厂路径 🔥',
+                '到「未来鹅的观察」检查你的鹅厂距离 📊',
+                '在「鹅给你的任务」制定备战计划 ✅',
+                '看看「鹅的判断」了解你的优劣势 💡'
             ];
             const randomTip = tips[Math.floor(Math.random() * tips.length)];
             return `${this.gooseMemory.name}，这个问题我需要再想想~ 🐧 不过你可以：\n\n${randomTip}\n\n或者直接问我关于腾讯校招的任何问题，我都在呢~ ✨`;
@@ -908,18 +962,18 @@ class FutureGoApp {
                 const firstTime = this.gooseMemory.totalCheckins === 1;
                 const streak = this.gooseMemory.streak;
                 if (firstTime) {
-                    msg = `🎉 ${name}，你的第一次打卡！太棒了！离鹅厂又近了一步！`;
+                    msg = `🎉 ${name}，你的第一次打卡！太棒了！🐣 从这一刻起，你正式踏上了通往鹅厂的路。每一步都算数！`;
                 } else if (streak >= 3) {
-                    msg = `🔥 连续${streak}天打卡！${name}你太自律了，鹅厂需要你这样的人！`;
+                    msg = `🔥 连续${streak}天打卡！${name}你太自律了，鹅厂需要你这样的人！🐧 这个节奏保持下去，秋招稳稳的！`;
                 } else {
-                    msg = `✅ 打卡成功！${name}今天又进步了一点~ 当前进度 ${mission.progress}%`;
+                    msg = `✅ 打卡成功！${name}今天又靠近鹅厂一步~ 当前进度 ${mission.progress}%。鹅的判断：你正在从探索期进入加速期 🐧`;
                 }
                 break;
             case 'complete':
-                msg = `🏆 太厉害了${name}！「${mission.title}」完成了！这是你完成的第 ${this.gooseMemory.completedMissions} 个任务！`;
+                msg = `🏆 太厉害了${name}！「${mission.title}」完成了！这是你完成的第 ${this.gooseMemory.completedMissions} 个任务。鹅的判断：这一步很关键，你开始进入实战阶段了 🐣`;
                 break;
             case 'start':
-                msg = `🚀 ${name}开始了新任务「${mission.title}」！好的开始是成功的一半，加油！`;
+                msg = `🚀 ${name}开始了新任务「${mission.title}」！好的开始是成功的一半。鹅的鼓励：别怕慢，只怕站，每天进步一点点~`;
                 break;
             case 'evaluate':
                 const score = mission.evaluation ? mission.evaluation.score : 0;
@@ -1117,6 +1171,18 @@ class FutureGoApp {
 
         // 根据时间设置问候语
         this.updateGreeting();
+
+        // 阶段选择器
+        this.setupStageSelector();
+
+        // 倒计时
+        this.setupCountdown();
+
+        // 每日鹅语
+        this.setupDailyQuote();
+
+        // 弱引导系统
+        this.setupGooseGuide();
 
         // 快捷导航芯片点击
         document.querySelectorAll('.quick-chip').forEach(chip => {
@@ -1382,10 +1448,12 @@ class FutureGoApp {
                 e.stopPropagation();
                 const posId = btn.dataset.positionId;
                 if (posId !== this.currentDreamId) {
+                    const newPos = this.dreamPositions.find(p => p.id === posId);
                     this.currentDreamId = posId;
                     this.updateDreamPositionDisplay();
                     this.closeDreamSelect();
                     this.refreshHeroDashboard();
+                    if (newPos) this.showToast(`💭 心仪岗位已切换为「${newPos.name}」`, 'success');
                 }
             });
         });
@@ -1395,9 +1463,11 @@ class FutureGoApp {
             card.addEventListener('click', () => {
                 const posId = card.dataset.positionId;
                 if (posId !== this.currentDreamId) {
+                    const newPos = this.dreamPositions.find(p => p.id === posId);
                     this.currentDreamId = posId;
                     this.updateDreamPositionDisplay();
                     this.closeDreamSelect();
+                    if (newPos) this.showToast(`💭 心仪岗位已切换为「${newPos.name}」`, 'success');
                 }
             });
         });
@@ -1416,6 +1486,173 @@ class FutureGoApp {
         else if (hour < 22) greeting = '晚上好';
         else greeting = '夜深了';
         timeEl.textContent = greeting;
+    }
+
+    setupGooseGuide() {
+        const chips = document.querySelectorAll('.guide-chip');
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const action = chip.dataset.action;
+                const gooseInput = document.getElementById('gooseInput');
+                const gooseToggle = document.querySelector('.goose-toggle');
+
+                // 打开鹅的聊天面板
+                if (gooseToggle && !gooseToggle.classList.contains('open')) {
+                    gooseToggle.click();
+                }
+
+                // 填入预设消息
+                if (gooseInput) {
+                    const prompts = {
+                        'fit': '帮我看看我适合什么岗位',
+                        'advice': '给我一个实习建议吧',
+                        'task': '帮我拆一个学习任务'
+                    };
+                    gooseInput.value = prompts[action] || prompts.fit;
+                    // 触发发送
+                    const sendBtn = document.getElementById('gooseSendBtn');
+                    if (sendBtn) sendBtn.click();
+                }
+            });
+        });
+    }
+
+    setupDailyQuote() {
+        const quotes = [
+            '今天你比昨天更接近鹅厂一点 🐧',
+            '你不是在找工作，是在变成更适合工作的人 ✨',
+            '每一次打卡，都是对未来的自己说"我准备好了" 💪',
+            '鹅厂的门一直开着，只是需要你用能力推开 🚪',
+            '成长不是一蹴而就，是每一天的微小积累 📈',
+            '别怕慢，只怕站 — 鹅一直在这里陪你 🐣',
+            '简历上的每一行，都曾经是今天的努力 📝',
+            '最好的投递时机是昨天，其次是今天 🔥',
+            '你和鹅厂之间，只差一个"开始"的距离 🎯',
+            '累了就歇一歇，但别忘了为什么出发 🌟'
+        ];
+
+        const quoteEl = document.getElementById('quoteText');
+        if (!quoteEl) return;
+
+        // 根据日期种子随机选一句（同一天显示同一句）
+        const today = new Date();
+        const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+        const idx = seed % quotes.length;
+        quoteEl.textContent = quotes[idx];
+
+        // 淡入动画
+        const card = document.getElementById('dailyGooseQuote');
+        if (card) {
+            card.style.opacity = '0';
+            card.style.transform = 'translateX(-10px)';
+            requestAnimationFrame(() => {
+                card.style.transition = 'all 0.6s ease 0.3s';
+                card.style.opacity = '1';
+                card.style.transform = 'translateX(0)';
+            });
+        }
+    }
+
+    setupCountdown() {
+        // 2027届秋招预计2026年8月1日启动
+        const targetDate = new Date('2026-08-01T00:00:00');
+        const daysEl = document.getElementById('cdDays');
+        const hoursEl = document.getElementById('cdHours');
+        const minsEl = document.getElementById('cdMins');
+        const hintEl = document.getElementById('countdownHint');
+
+        if (!daysEl || !hoursEl || !minsEl) return;
+
+        const update = () => {
+            const now = new Date();
+            let diff = targetDate - now;
+
+            if (diff <= 0) {
+                daysEl.textContent = '0';
+                hoursEl.textContent = '0';
+                minsEl.textContent = '0';
+                if (hintEl) hintEl.textContent = '鹅厂秋招已经启动！快去投递吧 🚀';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= days * 1000 * 60 * 60 * 24;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            diff -= hours * 1000 * 60 * 60;
+            const mins = Math.floor(diff / (1000 * 60));
+
+            daysEl.textContent = days;
+            hoursEl.textContent = String(hours).padStart(2, '0');
+            minsEl.textContent = String(mins).padStart(2, '0');
+        };
+
+        update();
+        setInterval(update, 60000); // 每分钟更新
+    }
+
+    setupStageSelector() {
+        const buttons = document.querySelectorAll('.stage-btn');
+        const summaryEl = document.getElementById('heroSummaryLine');
+        if (!buttons.length) return;
+
+        const stageContentMap = {
+            'freshman': {
+                greeting: '大一',
+                badge: '大一 · 认知探索期',
+                summary: '<span class="summary-quote-mark">"</span><p>欢迎来到大学！你现在处于<strong>认知探索期</strong> — 未来鹅建议先广泛了解不同职业方向，建立对行业的基本认知。不用急着定方向，多尝试、多体验，每一次探索都是未来的基石 🐣</p>'
+            },
+            'sophomore': {
+                greeting: '大二',
+                badge: '大二 · 专业理解期',
+                summary: '<span class="summary-quote-mark">"</span><p>你正处于<strong>专业理解期</strong> — 开始系统学习专业知识，积累项目经验。未来鹅建议选2-3个感兴趣的方向深入了解，参加比赛或小项目练手，为实习打基础 🐥</p>'
+            },
+            'junior': {
+                greeting: '大三',
+                badge: '大三 · 实习探索期',
+                summary: '<span class="summary-quote-mark">"</span><p>进入<strong>实习探索期</strong> — 这是积累实战经验的最佳时机。未来鹅建议瞄准暑期实习，针对目标岗位补齐技能短板。你离鹅厂只差一次高质量实习 🌟</p>'
+            },
+            'senior': {
+                greeting: '研二/大四',
+                badge: '研二(27届) · 信息分析专业',
+                summary: '<span class="summary-quote-mark">"</span><p>陪你从大一到校招，逐步靠近鹅厂 — 你的腾讯校招备战已进入<strong>关键窗口期</strong>，当前<strong>数据分析师-TEG</strong>是你的最优路径。你有扎实的CS功底+信息分析学术背景，还有策略产品实习经验加持，距离目标还有 <strong class="gap-highlight">22%</strong> 的能力差距需要补齐</p>'
+            }
+        };
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const stage = btn.dataset.stage;
+                const content = stageContentMap[stage];
+                if (!content) return;
+
+                // 更新问候语
+                const nameEl = document.getElementById('greetingName');
+                const badgeTextEl = document.querySelector('.greeting-badge-text');
+                if (nameEl) nameEl.textContent = content.greeting;
+                if (badgeTextEl) badgeTextEl.textContent = content.badge;
+
+                // 更新一句话总结
+                if (summaryEl) {
+                    summaryEl.innerHTML = content.summary;
+                    // 重新触发动画
+                    summaryEl.style.opacity = '0';
+                    summaryEl.style.transform = 'translateY(10px)';
+                    requestAnimationFrame(() => {
+                        summaryEl.style.transition = 'all 0.5s ease';
+                        summaryEl.style.opacity = '1';
+                        summaryEl.style.transform = 'translateY(0)';
+                    });
+                }
+
+                // 更新鹅的提示
+                if (this.gooseMemory) {
+                    const stageNames = { freshman: '大一认知探索期', sophomore: '大二专业理解期', junior: '大三实习探索期', senior: '研二/大四校招冲刺期' };
+                    this.gooseMemory.currentStage = stageNames[stage] || stageNames.senior;
+                }
+            });
+        });
     }
 
     animateOverviewDashboard() {
@@ -3790,7 +4027,7 @@ class FutureGoApp {
         const note = document.getElementById('checkinNote').value.trim();
 
         if (!note) {
-            alert('请填写打卡备注');
+            this.showToast('请填写打卡备注', 'warning');
             return;
         }
 
@@ -3815,6 +4052,13 @@ class FutureGoApp {
         this.closeCheckinOverlay();
         this.renderMissions();
         this.refreshHeroDashboard();
+
+        // Toast 轻通知
+        if (justCompleted) {
+            this.showToast(`🎉 「${mission.title}」已完成！鹅厂又近了一步`, 'success');
+        } else {
+            this.showToast(`✅ 打卡成功！进度 +${progressIncrement}%`, 'success');
+        }
 
         // 未来鹅情感反馈
         if (justCompleted) {
@@ -3998,7 +4242,7 @@ class FutureGoApp {
         const comment = document.getElementById('evalComment').value.trim();
 
         if (!comment) {
-            alert('请填写评估意见');
+            this.showToast('请填写评估意见', 'warning');
             return;
         }
 
@@ -4073,7 +4317,7 @@ class FutureGoApp {
 
     confirmCreateMission() {
         const title = document.getElementById('newMissionTitle').value.trim();
-        if (!title) { alert('请输入任务标题'); return; }
+        if (!title) { this.showToast('请输入任务标题', 'warning'); return; }
 
         const newMission = {
             id: 'm' + Date.now(),
@@ -4096,6 +4340,7 @@ class FutureGoApp {
 
         this.missionData.push(newMission);
         this.closeCheckinOverlay();
+        this.showToast(`📋 新任务「${title}」已创建`, 'success');
 
         // Switch to pending tab to show the new mission
         this.currentPhase = 'pending';
